@@ -32,7 +32,7 @@ def create_excel():
     writer = pd.ExcelWriter('yahoo_bsesn.xlsx', engine='xlsxwriter')
     for each_range in range_list:
         df = download_file(each_range)
-        df.to_excel(writer, sheet_name=each_range)
+        df.to_excel(writer, sheet_name=each_range,index=False)
 
     writer.save()
 
@@ -40,7 +40,6 @@ def create_excel():
 def filter_data():
     month_dict = {'1': 'Janauary', '2': 'February', '3': 'March', '4': 'April', '5': 'May', '6': 'June', '7': 'July',
                   '8': 'August', '9': 'September', '10': 'October', '11': 'November', '12': 'December'}
-    create_excel()
     df = pd.read_excel('yahoo_bsesn.xlsx',sheet_name='ytd',engine='openpyxl')
     mon = month.get()
     month_list = mon.split(",")
@@ -48,7 +47,7 @@ def filter_data():
     for each_month in month_list:
         dates = getting_date_range(2020, int(each_month))
         data_filter = df.loc[(df['Date'].ge(dates[0])) & (df['Date'].le(dates[-1]))]
-        data_filter.to_excel(writer, sheet_name=month_dict[each_month])
+        data_filter.to_excel(writer, sheet_name=month_dict[each_month],index=False)
     writer.save()
     top.destroy()
 
